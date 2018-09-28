@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  dashcast:
+    image: digitalalloys/dashcast
+    container_name: "dashcast"
+    network_mode: host
+    environment:
+      - DISPLAY_IP=10.2.1.202
+      - DASHBOARD_URL=http://10.2.1.19:8765
+      - DISPLAY_NAME="Lab TV"

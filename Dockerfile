@@ -13,9 +13,10 @@ ADD . /app
 RUN pip install -r requirements.txt
 
 # Define environment variables
-ENV DASHBOARD_URL "https://darksky.net"
+ENV DASHBOARD_URL "http://10.2.1.19:8765"
 ENV DISPLAY_NAME ""
 ENV IGNORE_CEC "True"
+ENV DISPLAY_IP "10.2.1.202"
 
 # Run app.sh when the container launches
 CMD ["./app.sh"]

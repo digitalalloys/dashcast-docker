@@ -12,10 +12,10 @@ import logging
 import pychromecast
 import pychromecast.controllers.dashcast as dashcast
 
-print('DashCast')
-print('Searching for Chromecasts...')
+print('Digital Alloys DashCast')
 
-DASHBOARD_URL = os.getenv('DASHBOARD_URL', 'https://home-assistant.io')
+DISPLAY_IP = os.getenv('DISPLAY_IP')
+DASHBOARD_URL = os.getenv('DASHBOARD_URL', 'https://digitalalloys.com')
 DISPLAY_NAME = os.getenv('DISPLAY_NAME')
 IGNORE_CEC = os.getenv('IGNORE_CEC') == 'True'
 
@@ -23,10 +23,8 @@ if IGNORE_CEC:
     print('Ignoring CEC for Chromecast', DISPLAY_NAME)
     pychromecast.IGNORE_CEC.append(DISPLAY_NAME)
 
-
 if '--show-debug' in sys.argv:
     logging.basicConfig(level=logging.DEBUG)
-
 
 class DashboardLauncher():
 
@@ -115,16 +113,23 @@ def main_loop():
 main_loop()
 """
 
-casts = pychromecast.get_chromecasts()
-if len(casts) == 0:
-    print('No Devices Found')
-    exit()
+if DISPLAY_IP:
+    print('Finding chromecast by IP...')
+    cast = pychromecast.Chromecast(host=DISPLAY_IP)
+    if not cast:
+        print('Chromecast with IP', DISPLAY_IP, 'not found')
 
-cast = next(cc for cc in casts if DISPLAY_NAME in (None, '') or cc.device.friendly_name == DISPLAY_NAME)
+else:
+    print('Searching for chromecast...')
+    casts = pychromecast.get_chromecasts()
+    if len(casts) == 0:
+        print('No Devices Found')
+        exit()
 
-if not cast:
-    print('Chromecast with name', DISPLAY_NAME, 'not found')
-    exit()
+    cast = next(cc for cc in casts if DISPLAY_NAME in (None, '') or cc.device.friendly_name == DISPLAY_NAME)
+    if not cast:
+        print('Chromecast with name', DISPLAY_NAME, 'not found')
+        exit()
 
 DashboardLauncher(cast, dashboard_url=DASHBOARD_URL)
 
