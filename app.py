@@ -14,8 +14,8 @@ import pychromecast.controllers.dashcast as dashcast
 
 print('Digital Alloys DashCast')
 
-DISPLAY_IP = os.getenv('DISPLAY_IP')
-DASHBOARD_URL = os.getenv('DASHBOARD_URL', 'https://digitalalloys.com')
+DISPLAY_IP = os.getenv('DISPLAY_IP', '10.2.1.202')
+DASHBOARD_URL = os.getenv('DASHBOARD_URL', 'http://digitalalloys.com')
 DISPLAY_NAME = os.getenv('DISPLAY_NAME')
 IGNORE_CEC = os.getenv('IGNORE_CEC') == 'True'
 
@@ -28,7 +28,7 @@ if '--show-debug' in sys.argv:
 
 class DashboardLauncher():
 
-    def __init__(self, device, dashboard_url='https://home-assistant.io', dashboard_app_name='DashCast'):
+    def __init__(self, device, dashboard_url='http://digitalalloys.com', dashboard_app_name='DigitalAlloysAutoCast'):
         self.device = device
         print('DashboardLauncher', self.device.name)
 
@@ -115,7 +115,7 @@ main_loop()
 
 if DISPLAY_IP:
     print('Finding chromecast by IP...')
-    cast = pychromecast.Chromecast(host=DISPLAY_IP)
+    cast = pychromecast.Chromecast(DISPLAY_IP)
     if not cast:
         print('Chromecast with IP', DISPLAY_IP, 'not found')
 
